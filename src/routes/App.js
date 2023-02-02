@@ -1,29 +1,37 @@
-import {useEffect, useState} from "react";
-import {Route, Routes} from "react-router-dom"
-import Sidebar from "../layouts/Sidebar";
+import {useEffect} from "react";
+import {Route, Routes, useLocation} from "react-router-dom"
 import NotFound from "../pages/NotFound";
-import Content from "../layouts/Content";
 import "../styles/app.css"
-import {log_s} from "../funcs";
-import HomePage from "../pages/HomePage";
+import Cabinet from "../pages/Cabinet";
+import ContractCreate from "../pages/Contract/Create";
+import ContractCreate2 from "../pages/Contract/Create2";
+import {useDispatch, useSelector} from "react-redux";
+import {getToken} from "../redux/actions/ActionCreaters";
 
 function App() {
-    const [sidebarOpen, setSidebarOpen] = useState(true)
+    const dispatch = useDispatch();
+    const {pathname} = useLocation()
+    const {user, isAuthenticated, isLoading, error} = useSelector(state => state.auth)
 
     useEffect(() => {
-        log_s("Log", "component loaded :)")
-    }, [])
+        if (isAuthenticated === false) {
+            dispatch(getToken())
+        }
+    }, [dispatch, isAuthenticated, pathname])
 
     return (
         <div className={"main-wrapper"}>
-            <Sidebar open={sidebarOpen} setOpen={setSidebarOpen}/>
-            <Content open={sidebarOpen}>
-                <Routes>
-                    <Route path={"/"} element={<HomePage/>}/>
+            <Routes>
+                <Route path={"/contract/create/:id"} element={<ContractCreate/>}/>
+                <Route path={"/contract/create-two/:id"} element={<ContractCreate2/>}/>
 
-                    <Route path={"/*"} element={<NotFound/>}/>
-                </Routes>
-            </Content>
+                <Route path={"/:page/:sub"} element={<Cabinet/>}/>
+                <Route path={"/:page"} element={<Cabinet/>}/>
+                <Route path={"/"} element={<Cabinet/>}/>
+
+
+                <Route path={"/*"} element={<NotFound/>}/>
+            </Routes>
         </div>
     );
 }

@@ -120,7 +120,7 @@ export const Menus = styled.div`
   /* width */
 
   &::-webkit-scrollbar {
-    width: 8px;
+    width: 5px;
   }
 
   /* Handle */
