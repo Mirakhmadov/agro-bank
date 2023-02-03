@@ -1,9 +1,9 @@
-import {BACKEND_LOCAL, BACKEND_NET143, BACKEND_NET151, BACKEND_ONLINE} from "./const";
+import {BACKEND_ONLINE} from "./const";
 import axios from "axios";
 
 
 export const httpClient = axios.create({
-    baseURL: BACKEND_NET143,
+    baseURL: BACKEND_ONLINE,
     // withCredentials: true,
     headers: {
         Authorization: `Token ${localStorage.getItem("token")}`
